@@ -16,24 +16,32 @@ import java.util.List;
 @Service
 public class GoodsService {
 
-    /*乐观锁冲突最大重试次数*/
+    /**
+     * 乐观锁冲突最大重试次数
+     */
     private static final int DEFAULT_MAX_RETRIES = 5;
 
     /*@Autowired*/
     @Resource
     GoodsMapper goodsMapper;
 
-    /*查询商品列表*/
+    /**
+     * 查询商品列表
+     */
     public List<GoodsVO> listGoodsVO() {
         return goodsMapper.listGoodsVO();
     }
 
-    /*根据id查询指定商品*/
+    /**
+     * 根据id查询指定商品
+     */
     public GoodsVO getGoodsVoByGoodsId(long goodsId) {
         return goodsMapper.getGoodsVoByGoodsId(goodsId);
     }
 
-    /*减少库存，每次减一*/
+    /**
+     * 减少库存，每次减一
+     */
     public boolean reduceStock(GoodsVO goods) {
         int numAttempts = 0;
         int ret = 0;

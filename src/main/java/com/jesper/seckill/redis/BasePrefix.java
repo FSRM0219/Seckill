@@ -1,7 +1,7 @@
 package com.jesper.seckill.redis;
 
 /**
- * expireSeconds默认0代表永不过期
+ * BasePrefix实现接口KeyPrefix<br>expireSeconds默认为0代表永不过期<br>
  */
 public abstract class BasePrefix implements KeyPrefix {
 
@@ -9,11 +9,11 @@ public abstract class BasePrefix implements KeyPrefix {
 
     private final String prefix;
 
-    public BasePrefix(String prefix){
+    public BasePrefix(String prefix) {
         this(0, prefix);
     }
 
-    public BasePrefix(int expireSeconds, String prefix){
+    public BasePrefix(int expireSeconds, String prefix) {
         this.expireSeconds = expireSeconds;
         this.prefix = prefix;
     }
@@ -23,9 +23,12 @@ public abstract class BasePrefix implements KeyPrefix {
         return expireSeconds;
     }
 
+    /**
+     * String className = getClass().getSimpleName();<br>getClass()方法返回当前对象的运行时类<br>getSimpleName()方法返回类的简单名称
+     */
     @Override
     public String getPrefix() {
-        String className = getClass().getSimpleName();//拿到参数类类名
+        String className = getClass().getSimpleName();
         return className + ":" + prefix;
     }
 }

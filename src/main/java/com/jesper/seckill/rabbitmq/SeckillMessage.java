@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 消息体
+ * 消息体：User和goodsID
  */
 @Setter
 @Getter

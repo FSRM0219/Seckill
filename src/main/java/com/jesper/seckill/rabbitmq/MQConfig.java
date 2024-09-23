@@ -8,23 +8,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * RabbitMQ队列主题
- * RabbitMQ交换机名称
- * RabbitMQ交换机和队列绑定匹配键
+ * DirectExchange适合需精确路由场景；
+ * TopicExchange适合需灵活路由场景，例如，基于主题的消息发布/订阅模式
  */
 @Configuration
 public class MQConfig {
 
     public static final String QUEUE = "queue";
-    public static final String TOPIC_QUEUE1 = "topicQueue1";
-    public static final String TOPIC_QUEUE2 = "topicQueue2";
+    public static final String TOPIC_QUEUE1 = "topic.Queue1";
+    public static final String TOPIC_QUEUE2 = "topic.Queue2";
     public static final String TOPIC_EXCHANGE = "topicExchange";
 
-    /**
-     * Direct模式 交换机Exchange
-     * 发送者先发送到交换机上，然后交换机作为路由再将信息发到队列，
-     */
-    /*持久队列*/
     @Bean
     public Queue queue() {
         return new Queue(QUEUE, true);

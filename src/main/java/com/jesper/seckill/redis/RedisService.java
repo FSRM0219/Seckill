@@ -32,7 +32,9 @@ public class RedisService {
         }
     }
 
-    /*存储对象*/
+    /**
+     * 存储对象
+     */
     public <T> Boolean set(KeyPrefix prefix, String key, T value) {
         Jedis jedis = null;
         try {
@@ -54,7 +56,9 @@ public class RedisService {
         }
     }
 
-    /*删除*/
+    /**
+     * 删除
+     */
     public void delete(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
@@ -66,7 +70,9 @@ public class RedisService {
         }
     }
 
-    /*判断key是否存在*/
+    /**
+     * 判断key是否存在
+     */
     public <T> boolean exists(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
@@ -78,7 +84,9 @@ public class RedisService {
         }
     }
 
-    /*Redis Incr命令将key中储存的数字值增一，如果key不存在，那么key的值会先被初始化为0，然后再执行INCR操作*/
+    /**
+     * Redis Incr命令将key中储存的数字值增一，如果key不存在，那么key的值会先被初始化为0，然后再执行INCR操作
+     */
     public <T> Long incr(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
@@ -102,26 +110,31 @@ public class RedisService {
         }
     }
 
-
+    /**
+     * 将不同类型的对象转换为其字符串表示形式
+     */
     public static <T> String beanToString(T value) {
         if (value == null) {
             return null;
         }
         Class<?> clazz = value.getClass();
-        if (clazz == int.class || clazz == Integer.class) {
+        if (clazz == Integer.class) {
             return String.valueOf(value);
-        } else if (clazz == long.class || clazz == Long.class) {
+        } else if (clazz == Long.class) {
             return String.valueOf(value);
         } else if (clazz == String.class) {
             return (String) value;
         } else {
             return JSON.toJSONString(value);
         }
-
     }
 
+    /**
+     * 将字符串转换为指定类型的对象
+     */
+    @SuppressWarnings("unchecked")
     public static <T> T stringToBean(String str, Class<T> clazz) {
-        if (str == null || str.length() <= 0 || clazz == null) {
+        if (str == null || str.isEmpty() || clazz == null) {
             return null;
         }
         if (clazz == int.class || clazz == Integer.class) {

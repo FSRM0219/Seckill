@@ -22,24 +22,20 @@ public class MQReceiver {
 
     private static final Logger log = LoggerFactory.getLogger(MQReceiver.class);
 
-    /*@Autowired*/
     @Resource
     RedisService redisService;
 
-    /*@Autowired*/
     @Resource
     GoodsService goodsService;
 
-    /*@Autowired*/
     @Resource
     OrderService orderService;
 
-    /*@Autowired*/
     @Resource
     SeckillService seckillService;
 
-    @RabbitListener(queues=MQConfig.QUEUE)
-    public void receive(String message){
+    @RabbitListener(queues = MQConfig.QUEUE)
+    public void receive(String message) {
         log.info("receive message:{}", message);
         SeckillMessage m = RedisService.stringToBean(message, SeckillMessage.class);
         User user = m.getUser();
@@ -47,17 +43,15 @@ public class MQReceiver {
 
         GoodsVO goodsVO = goodsService.getGoodsVoByGoodsId(goodsId);
         int stock = goodsVO.getStockCount();
-        if(stock <= 0){
+        if (stock <= 0) {
             return;
         }
 
-        //判断重复秒杀
         SeckillOrder order = orderService.getOrderByUserIdGoodsId(user.getId(), goodsId);
-        if(order != null) {
+        if (order != null) {
             return;
         }
 
-        //减库存 下订单 写入秒杀订单
         seckillService.seckill(user, goodsVO);
     }
 

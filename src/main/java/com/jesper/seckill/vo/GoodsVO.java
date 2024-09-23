@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.Date;
 
+/**
+ * seckillPrice<br>stockCount
+ * */
 @Setter
 @Getter
 public class GoodsVO extends Goods {

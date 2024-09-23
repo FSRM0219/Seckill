@@ -20,11 +20,9 @@ import java.util.Date;
 @Service
 public class OrderService {
 
-    /*@Autowired*/
     @Resource
     OrderMapper orderMapper;
 
-    /*@Autowired*/
     @Resource
     RedisService redisService;
 

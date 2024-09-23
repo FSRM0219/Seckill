@@ -18,15 +18,12 @@ import javax.annotation.Resource;
 @Service
 public class SeckillService {
 
-    /*@Autowired*/
     @Resource
     GoodsService goodsService;
 
-    /*@Autowired*/
     @Resource
     OrderService orderService;
 
-    /*@Autowired*/
     @Resource
     RedisService redisService;
 

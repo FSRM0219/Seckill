@@ -1,12 +1,12 @@
 package com.jesper.seckill.redis;
 
 /**
- *
+ * expireSeconds()<br>getPrefix()
  */
 public interface KeyPrefix {
 
-    public int expireSeconds();
+    int expireSeconds();
 
-    public String getPrefix();
+    String getPrefix();
 
 }
