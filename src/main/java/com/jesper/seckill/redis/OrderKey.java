@@ -1,8 +1,5 @@
 package com.jesper.seckill.redis;
 
-/**
- * 创建OrderKey静态实例getSeckillOrderByUidGid
- */
 public class OrderKey extends BasePrefix {
 
     /**
@@ -12,6 +9,9 @@ public class OrderKey extends BasePrefix {
         super(prefix);
     }
 
+    /**
+     * OrderKey静态实例
+     */
     public static OrderKey getSeckillOrderByUidGid = new OrderKey("seckill");
 
 }

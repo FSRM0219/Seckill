@@ -26,10 +26,16 @@ public class OrderService {
     @Resource
     RedisService redisService;
 
+    /**
+     * 获取缓存
+     */
     public SeckillOrder getOrderByUserIdGoodsId(long userId, long goodsId) {
         return redisService.get(OrderKey.getSeckillOrderByUidGid, userId + "_" + goodsId, SeckillOrder.class);
     }
 
+    /**
+     * 根据订单ID查询OrderInfo
+     */
     public OrderInfo getOrderById(long orderId) {
         return orderMapper.getOrderById(orderId);
     }

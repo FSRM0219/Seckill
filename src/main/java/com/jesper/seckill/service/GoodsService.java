@@ -21,7 +21,6 @@ public class GoodsService {
      */
     private static final int DEFAULT_MAX_RETRIES = 5;
 
-    /*@Autowired*/
     @Resource
     GoodsMapper goodsMapper;
 
@@ -36,7 +35,7 @@ public class GoodsService {
      * 根据id查询指定商品
      */
     public GoodsVO getGoodsVoByGoodsId(long goodsId) {
-        return goodsMapper.getGoodsVoByGoodsId(goodsId);
+        return goodsMapper.getGoodsVOByGoodsId(goodsId);
     }
 
     /**
@@ -44,7 +43,7 @@ public class GoodsService {
      */
     public boolean reduceStock(GoodsVO goods) {
         int numAttempts = 0;
-        int ret = 0;
+        int res = 0;
         SeckillGoods sg = new SeckillGoods();
         sg.setGoodsId(goods.getId());
         sg.setVersion(goods.getVersion());
@@ -52,13 +51,13 @@ public class GoodsService {
             numAttempts++;
             try {
                 sg.setVersion(goodsMapper.getVersionByGoodsId(goods.getId()));
-                ret = goodsMapper.reduceStockByVersion(sg);
+                res = goodsMapper.reduceStockByVersion(sg);
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
-            if (ret != 0)
+            if (res != 0)
                 break;
         } while (numAttempts < DEFAULT_MAX_RETRIES);
-        return ret > 0;
+        return res > 0;
     }
 }

@@ -24,7 +24,10 @@ public abstract class BasePrefix implements KeyPrefix {
     }
 
     /**
-     * String className = getClass().getSimpleName();<br>getClass()方法返回当前对象的运行时类<br>getSimpleName()方法返回类的简单名称
+     * String className = getClass().getSimpleName();<br>
+     * getClass()方法返回当前对象的运行时类<br>
+     * getSimpleName()方法返回类的简单名称<br>
+     * return className + ":" + prefix;
      */
     @Override
     public String getPrefix() {

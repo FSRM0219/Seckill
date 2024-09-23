@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * DirectExchange适合需精确路由场景；
+ * DirectExchange适合需精确路由场景；<br>
  * TopicExchange适合需灵活路由场景，例如，基于主题的消息发布/订阅模式
  */
 @Configuration

@@ -8,18 +8,14 @@ import redis.clients.jedis.JedisPool;
 import javax.annotation.Resource;
 
 /**
- * redis服务
+ * redis相关服务
  */
 @Service
 public class RedisService {
 
-    /*@Autowired*/
     @Resource
     JedisPool jedisPool;
 
-    /**
-     * 从redis连接池获取redis实例
-     */
     public <T> T get(KeyPrefix prefix, String key, Class<T> clazz) {
         Jedis jedis = null;
         try {
@@ -32,15 +28,12 @@ public class RedisService {
         }
     }
 
-    /**
-     * 存储对象
-     */
     public <T> Boolean set(KeyPrefix prefix, String key, T value) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             String str = beanToString(value);
-            if (str == null || str.length() <= 0) {
+            if (str == null || str.isEmpty()) {
                 return false;
             }
             String realKey = prefix.getPrefix() + key;
@@ -56,24 +49,18 @@ public class RedisService {
         }
     }
 
-    /**
-     * 删除
-     */
     public void delete(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             String realKey = prefix.getPrefix() + key;
-            long ret = jedis.del(realKey);
+            jedis.del(realKey);
         } finally {
             returnToPool(jedis);
         }
     }
 
-    /**
-     * 判断key是否存在
-     */
-    public <T> boolean exists(KeyPrefix prefix, String key) {
+    public boolean exists(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
@@ -84,10 +71,7 @@ public class RedisService {
         }
     }
 
-    /**
-     * Redis Incr命令将key中储存的数字值增一，如果key不存在，那么key的值会先被初始化为0，然后再执行INCR操作
-     */
-    public <T> Long incr(KeyPrefix prefix, String key) {
+    public Long incr(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
@@ -98,8 +82,7 @@ public class RedisService {
         }
     }
 
-    /*减少值*/
-    public <T> Long decr(KeyPrefix prefix, String key) {
+    public Long decr(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();

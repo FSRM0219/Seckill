@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * seckillPrice<br>stockCount
+ * 秒杀价格、库存、开始及截至时间、版本号视图
  * */
 @Setter
 @Getter

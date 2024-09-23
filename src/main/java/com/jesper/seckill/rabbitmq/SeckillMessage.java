@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 消息体：User和goodsID
+ * 消息体<br>private User user;<br>private long goodsId;
  */
 @Setter
 @Getter
