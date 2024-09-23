@@ -1,5 +1,6 @@
 package com.jesper.seckill.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import lombok.Setter;
  * 商品ID<br>
  * }
  */
-@Setter
+@Builder
 @Getter
 public class SeckillOrder {
 

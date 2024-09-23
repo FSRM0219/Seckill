@@ -42,22 +42,25 @@ public class OrderService {
 
     @Transactional
     public OrderInfo createOrder(User user, GoodsVO goods) {
-        OrderInfo orderInfo = new OrderInfo();
-        orderInfo.setCreateDate(new Date());
-        orderInfo.setDeliveryAddrId(0L);
-        orderInfo.setGoodsCount(1);
-        orderInfo.setGoodsId(goods.getId());
-        orderInfo.setGoodsName(goods.getGoodsName());
-        orderInfo.setGoodsPrice(goods.getGoodsPrice());
-        orderInfo.setOrderChannel(1);
-        orderInfo.setStatus(0);
-        orderInfo.setUserId(user.getId());
+        OrderInfo orderInfo = OrderInfo.builder()
+                .createDate(new Date())
+                .deliveryAddrId(0L)
+                .goodsCount(1)
+                .goodsId(goods.getId())
+                .goodsName(goods.getGoodsName())
+                .goodsPrice(goods.getGoodsPrice())
+                .orderChannel(1)
+                .status(0)
+                .build();
+
         orderMapper.insert(orderInfo);
 
-        SeckillOrder seckillOrder = new SeckillOrder();
-        seckillOrder.setGoodsId(goods.getId());
-        seckillOrder.setOrderId(orderInfo.getId());
-        seckillOrder.setUserId(user.getId());
+        SeckillOrder seckillOrder = SeckillOrder.builder()
+                .goodsId(goods.getId())
+                .orderId(orderInfo.getId())
+                .userId(user.getId())
+                .build();
+
         orderMapper.insertSeckillOrder(seckillOrder);
         redisService.set(OrderKey.getSeckillOrderByUidGid, user.getId() + "_" + goods.getId(), seckillOrder);
 
