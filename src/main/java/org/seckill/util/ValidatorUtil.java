@@ -6,9 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 登录校验工具类——
- * 默认以1开头后面加10个数字为手机号，
- * 匹配返回true，否则返回false
+ * 登录校验工具类<br>
+ * 默认以1开头后面加10个数字为手机号，匹配返回true，否则返回false
  */
 public class ValidatorUtil {
 
@@ -19,7 +18,6 @@ public class ValidatorUtil {
             return false;
         }
         Matcher m = mobile_pattern.matcher(src);
-        /*true if, and only if, the entire region sequence matches this matcher's pattern*/
         return m.matches();
     }
 }
