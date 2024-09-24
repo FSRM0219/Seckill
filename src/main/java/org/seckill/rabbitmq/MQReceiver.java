@@ -23,9 +23,6 @@ public class MQReceiver {
     private static final Logger log = LoggerFactory.getLogger(MQReceiver.class);
 
     @Resource
-    RedisService redisService;
-
-    @Resource
     GoodsService goodsService;
 
     @Resource

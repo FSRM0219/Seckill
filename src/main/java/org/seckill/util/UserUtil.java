@@ -20,12 +20,12 @@ import com.alibaba.fastjson.JSONObject;
 import org.seckill.entity.User;
 
 /**
- * PreparedStatement<br>Java JDBC中用于执行预编译SQL语句的接口<br>
+ * PreparedStatement<br>Java JDBC中用于执行预编译SQL语句的接口<br><br>
  * 特点:<br>
  * 预编译：执行之前对SQL语句进行预编译,SQL语句解析和编译只会发生一次,
  * 之后可以多次执行相同的SQL语句，只需更改参数值<br>
  * 参数化查询：使用占位符?表示SQL语句中的参数,可以有效防止SQL注入攻击<br>
- * 批处理支持：支持批量执行多条SQL语句，可以显著提高性能<br>
+ * 批处理支持：支持批量执行多条SQL语句，可以显著提高性能<br><br>
  * 使用方法:<br>
  * 1.通过Connection对象创建PreparedStatement：<br>
  * PreparedStatement preState = conn.prepareStatement(sql);<br>

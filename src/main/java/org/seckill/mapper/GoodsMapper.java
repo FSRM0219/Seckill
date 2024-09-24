@@ -9,9 +9,6 @@ import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
-/**
- * stock_count > 0 && 版本号实现乐观锁，防止超卖
- */
 @Mapper
 public interface GoodsMapper {
 

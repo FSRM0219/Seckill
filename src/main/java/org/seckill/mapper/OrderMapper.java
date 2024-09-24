@@ -4,9 +4,6 @@ import org.seckill.entity.OrderInfo;
 import org.seckill.entity.SeckillOrder;
 import org.apache.ibatis.annotations.*;
 
-/**
- *
- */
 @Mapper
 public interface OrderMapper {
 
@@ -17,7 +14,6 @@ public interface OrderMapper {
             + "#{userId}, #{goodsId}, #{goodsName}, #{goodsCount}, #{goodsPrice}, #{orderChannel},#{status},#{createDate} )")
     @SelectKey(keyColumn = "id", keyProperty = "id", resultType = long.class, before = false, statement = "select last_insert_id()")
     void insert(OrderInfo orderInfo);
-
 
     @Insert("insert into sk_order (user_id, goods_id, order_id)values(#{userId}, #{goodsId}, #{orderId})")
     void insertSeckillOrder(SeckillOrder order);
