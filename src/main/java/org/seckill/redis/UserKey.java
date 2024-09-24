@@ -1,8 +1,5 @@
 package org.seckill.redis;
 
-/**
- *
- */
 public class UserKey extends BasePrefix {
 
     public static final int TOKEN_EXPIRE = 3600 * 24 * 2;

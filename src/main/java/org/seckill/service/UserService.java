@@ -16,17 +16,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- */
 @Service
 public class UserService {
 
-    /*@Autowired*/
     @Resource
     UserMapper userMapper;
 
-    /*@Autowired*/
     @Resource
     RedisService redisService;
 
@@ -54,7 +49,6 @@ public class UserService {
         toBeUpdate.setId(id);
         toBeUpdate.setPassword(MD5Util.formPassToDBPass(formPass, user.getSalt()));
         userMapper.update(toBeUpdate);
-
         redisService.delete(UserKey.getById, "" + id);
         user.setPassword(toBeUpdate.getPassword());
         redisService.set(UserKey.token, token, user);

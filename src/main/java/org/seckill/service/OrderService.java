@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Date;
 
-/**
- * 订单详情表和秒杀订单表需同时新增一条数据，需保证两个操作是一个事物
- */
 @Service
 public class OrderService {
 
@@ -25,22 +22,19 @@ public class OrderService {
     @Resource
     RedisService redisService;
 
-    /**
-     * 获取缓存
-     */
+    // 获取缓存
     public SeckillOrder getOrderByUserIdGoodsId(long userId, long goodsId) {
         return redisService.get(OrderKey.getSeckillOrderByUidGid, userId + "_" + goodsId, SeckillOrder.class);
     }
 
-    /**
-     * 根据订单ID查询OrderInfo
-     */
+    // 根据订单ID查询OrderInfo
     public OrderInfo getOrderById(long orderId) {
         return orderMapper.getOrderById(orderId);
     }
 
     @Transactional
     public OrderInfo createOrder(User user, GoodsVO goods) {
+        // 创建订单
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setCreateDate(new Date());
         orderInfo.setDeliveryAddrId(0L);
@@ -50,16 +44,14 @@ public class OrderService {
         orderInfo.setGoodsPrice(goods.getGoodsPrice());
         orderInfo.setOrderChannel(1);
         orderInfo.setStatus(0);
-
-
         orderMapper.insert(orderInfo);
-
+        // 秒杀订单
         SeckillOrder seckillOrder = new SeckillOrder();
         seckillOrder.setOrderId(orderInfo.getId());
         seckillOrder.setUserId(user.getId());
         seckillOrder.setGoodsId(goods.getId());
-
         orderMapper.insertSeckillOrder(seckillOrder);
+        // 订单详情表和秒杀订单表需同时新增一条数据，需保证两个操作是一个事物
         redisService.set(OrderKey.getSeckillOrderByUidGid, user.getId() + "_" + goods.getId(), seckillOrder);
 
         return orderInfo;

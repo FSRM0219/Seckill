@@ -9,17 +9,11 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- *
- */
 @Slf4j
 @Service
 public class GoodsService {
 
-    /**
-     * 乐观锁冲突最大重试次数
-     */
-    private static final int DEFAULT_MAX_RETRIES = 5;
+    private static final int DEFAULT_MAX_RETRIES = 5; // 乐观锁冲突最大重试次数
 
     @Resource
     GoodsMapper goodsMapper;
@@ -55,7 +49,7 @@ public class GoodsService {
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
-            if (res != 0)
+            if (res != 0) // res为0即影响行数为0，继续尝试
                 break;
         } while (numAttempts < DEFAULT_MAX_RETRIES);
         return res > 0;

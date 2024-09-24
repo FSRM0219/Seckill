@@ -1,8 +1,5 @@
 package org.seckill.redis;
 
-/**
- * BasePrefix实现接口KeyPrefix<br>expireSeconds默认为0代表永不过期<br>
- */
 public abstract class BasePrefix implements KeyPrefix {
 
     private final int expireSeconds;
@@ -10,7 +7,7 @@ public abstract class BasePrefix implements KeyPrefix {
     private final String prefix;
 
     public BasePrefix(String prefix) {
-        this(0, prefix);
+        this(0, prefix); // 0代表永不过期
     }
 
     public BasePrefix(int expireSeconds, String prefix) {
@@ -24,10 +21,8 @@ public abstract class BasePrefix implements KeyPrefix {
     }
 
     /**
-     * String className = getClass().getSimpleName();<br>
      * getClass()方法返回当前对象的运行时类<br>
      * getSimpleName()方法返回类的简单名称<br>
-     * return className + ":" + prefix;
      */
     @Override
     public String getPrefix() {

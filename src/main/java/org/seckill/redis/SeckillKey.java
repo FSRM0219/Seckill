@@ -6,8 +6,6 @@ public class SeckillKey extends BasePrefix {
         super(prefix);
     }
 
-    /**
-     * SeckillKey静态实例
-     * */
     public static SeckillKey isGoodsOver = new SeckillKey("over");
+
 }

@@ -10,11 +10,9 @@ import javax.annotation.Resource;
 @Service
 public class RedisPoolFactory {
 
-    /*@Autowired*/
     @Resource
     RedisConfig redisConfig;
 
-    /*将redis连接池注入spring容器*/
     @Bean
     public JedisPool JedisPoolFactory() {
         JedisPoolConfig config = new JedisPoolConfig();
