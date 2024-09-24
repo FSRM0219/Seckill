@@ -26,9 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/**
- *
- */
 @Controller
 @RequestMapping("/seckill")
 public class SeckillController implements InitializingBean {
@@ -52,7 +49,7 @@ public class SeckillController implements InitializingBean {
     RateLimiter rateLimiter = RateLimiter.create(10);
 
     /*做标记，判断该商品是否被处理过了*/
-    private HashMap<Long, Boolean> localOverMap = new HashMap<Long, Boolean>();
+    private final HashMap<Long, Boolean> localOverMap = new HashMap<Long, Boolean>();
 
     /*将同步下单改为异步下单*/
     @RequestMapping(value = "/do_seckill", method = RequestMethod.POST)

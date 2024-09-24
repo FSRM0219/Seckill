@@ -3,9 +3,6 @@ package org.seckill.result;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 泛型类
- */
 @Setter
 @Getter
 public class Result<T> {
@@ -24,11 +21,6 @@ public class Result<T> {
 
     private Result(T data) {
         this.data = data;
-    }
-
-    private Result(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
     }
 
     private Result(CodeMsg codeMsg) {

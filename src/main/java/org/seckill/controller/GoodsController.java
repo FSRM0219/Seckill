@@ -6,7 +6,6 @@ import org.seckill.redis.GoodsKey;
 import org.seckill.redis.RedisService;
 import org.seckill.result.Result;
 import org.seckill.service.GoodsService;
-import org.seckill.service.UserService;
 import org.seckill.vo.GoodsDetailVO;
 import org.seckill.vo.GoodsVO;
 import org.springframework.stereotype.Controller;
@@ -23,15 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- *
- */
 @Controller
 @RequestMapping("/goods")
 public class GoodsController {
-
-    @Resource
-    UserService userService;
 
     @Resource
     RedisService redisService;

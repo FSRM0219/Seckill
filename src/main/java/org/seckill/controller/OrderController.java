@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
-/**
- *
- */
 @Controller
 @RequestMapping("/order")
 public class OrderController {

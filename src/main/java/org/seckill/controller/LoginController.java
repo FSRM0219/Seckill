@@ -13,9 +13,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-/**
- *
- */
 @Controller
 @RequestMapping("/login")
 public class LoginController {
@@ -32,7 +29,8 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<String> doLogin(HttpServletResponse response, @Valid LoginVO loginVO) {//加入JSR303参数校验
+    public Result<String> doLogin(HttpServletResponse response, @Valid LoginVO loginVO) {
+        // 加入JSR303参数校验
         log.info(loginVO.toString());
         String token = userService.login(response, loginVO);
         return Result.success(token);
