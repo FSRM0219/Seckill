@@ -22,6 +22,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * <strong>返回类型:</strong><br>
+ * detail2方法:返回类型为String,使用Thymeleaf模板引擎渲染商品详情页面，将生成的HTML缓存到Redis中;<br>
+ * detail方法:不涉及HTML渲染,将商品详情封装在GoodsDetailVO对象中,以JSON格式返回;<br>
+ * <strong>缓存机制:</strong><br>
+ * detail2方法:返回HTML内容之前,检查Redis缓存中是否存在该商品的详情页面.如果存在，则直接返回缓存的HTML;
+ * 如果不存在，则查询数据库获取商品详情,渲染HTML,将生成的HTML存入Redis;<br>
+ * detail方法:直接从数据库查询商品详情返回JSON对象;<br>
+ * <strong>模板渲染</strong><br>
+ * detail2方法:使用SpringWebContext和Thymeleaf渲染商品详情页面，适用于返回完整的HTML页面;<br>
+ * detail方法:直接返回商品详情的JSON数据，适合用于AJAX请求或前端框架如Vue.js、React.js进行数据渲染;<br>
+ * <strong>适用场景</strong><br>
+ * detail2方法:适合用于传统的服务器渲染的网页应用，用户访问商品详情页面时直接获取完整的HTML;<br>
+ * detail方法:适合用于现代的单页应用SPA或需要动态加载数据的场景,前端可以通过AJAX请求获取商品详情数据<br>
+ */
 @Controller
 @RequestMapping("/goods")
 public class GoodsController {
@@ -38,11 +53,7 @@ public class GoodsController {
     @Resource
     ThymeleafViewResolver thymeleafViewResolver;
 
-    /*
-     * 商品列表页面
-     * QPS:433
-     * 1000 * 10
-     */
+    // 商品列表页面
     @RequestMapping(value = "/to_list", produces = "text/html")
     @ResponseBody
     public String list(HttpServletRequest request, HttpServletResponse response, Model model, User user) {
@@ -55,8 +66,7 @@ public class GoodsController {
         model.addAttribute("user", user);
         model.addAttribute("goodsList", goodsList);
 
-        SpringWebContext ctx = new SpringWebContext(request, response,
-                request.getServletContext(), request.getLocale(), model.asMap(), applicationContext);
+        SpringWebContext ctx = new SpringWebContext(request, response, request.getServletContext(), request.getLocale(), model.asMap(), applicationContext);
         html = thymeleafViewResolver.getTemplateEngine().process("goods_list", ctx);
 
         if (!StringUtils.isEmpty(html)) {
@@ -65,7 +75,7 @@ public class GoodsController {
         return html;
     }
 
-    /*商品详情页面*/
+    // 商品详情页面
     @RequestMapping(value = "/to_detail2/{goodsId}", produces = "text/html")
     @ResponseBody
     public String detail2(HttpServletRequest request, HttpServletResponse response, Model model, User user, @PathVariable("goodsId") long goodsId) {
@@ -76,7 +86,7 @@ public class GoodsController {
             return html;
         }
 
-        /*根据id查询商品详情*/
+        // 根据id查询商品详情
         GoodsVO goods = goodsService.getGoodsVoByGoodsId(goodsId);
         model.addAttribute("goods", goods);
 
@@ -87,21 +97,20 @@ public class GoodsController {
         int seckillStatus = 0;
         int remainSeconds = 0;
 
-        if (now < startTime) {//秒杀还没开始，倒计时
-            seckillStatus = 0;
+        // 判断秒杀阶段
+        if (now < startTime) {
             remainSeconds = (int) ((startTime - now) / 1000);
-        } else if (now > endTime) {//秒杀已经结束
+        } else if (now > endTime) {
             seckillStatus = 2;
             remainSeconds = -1;
-        } else {//秒杀进行中
+        } else {
             seckillStatus = 1;
-            remainSeconds = 0;
         }
+
         model.addAttribute("seckillStatus", seckillStatus);
         model.addAttribute("remainSeconds", remainSeconds);
 
-        SpringWebContext ctx = new SpringWebContext(request, response,
-                request.getServletContext(), request.getLocale(), model.asMap(), applicationContext);
+        SpringWebContext ctx = new SpringWebContext(request, response, request.getServletContext(), request.getLocale(), model.asMap(), applicationContext);
         html = thymeleafViewResolver.getTemplateEngine().process("goods_detail", ctx);
         if (!StringUtils.isEmpty(html)) {
             redisService.set(GoodsKey.getGoodsDetail, "" + goodsId, html);
@@ -109,12 +118,12 @@ public class GoodsController {
         return html;
     }
 
-    /*商品详情页面*/
+    // 商品详情页面
     @RequestMapping(value = "/detail/{goodsId}")
     @ResponseBody
-    public Result<GoodsDetailVO> detail(HttpServletRequest request, HttpServletResponse response, Model model, User user, @PathVariable("goodsId") long goodsId) {
+    public Result<GoodsDetailVO> detail(Model model, User user, @PathVariable("goodsId") long goodsId) {
 
-        /*根据id查询商品详情*/
+        // 根据id查询商品详情
         GoodsVO goods = goodsService.getGoodsVoByGoodsId(goodsId);
         model.addAttribute("goods", goods);
 
@@ -125,16 +134,15 @@ public class GoodsController {
         int seckillStatus = 0;
         int remainSeconds = 0;
 
-        if (now < startTime) {//秒杀还没开始，倒计时
-            seckillStatus = 0;
+        if (now < startTime) {
             remainSeconds = (int) ((startTime - now) / 1000);
-        } else if (now > endTime) {//秒杀已经结束
+        } else if (now > endTime) {
             seckillStatus = 2;
             remainSeconds = -1;
-        } else {//秒杀进行中
+        } else {
             seckillStatus = 1;
-            remainSeconds = 0;
         }
+
         GoodsDetailVO vo = new GoodsDetailVO();
         vo.setGoods(goods);
         vo.setUser(user);

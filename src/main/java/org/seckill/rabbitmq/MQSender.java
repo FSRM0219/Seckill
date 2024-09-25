@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * RabbitTemplate是AmqpTemplate的一个具体实现;<br>
- * AmqpTemplate适用于需要与多种AMQP消息代理进行交互的场景;<br>
- * RabbitTemplate适用于专门与RabbitMQ进行交互的场景,提供RabbitMQ的特定功能，例如支持RabbitMQ消息确认,事务和回调;
+ * RabbitTemplate→AmqpTemplate具体实现;<br>
+ * AmqpTemplate适用于与多种AMQP消息代理进行交互场景;<br>
+ * RabbitTemplate适用于RabbitMQ交互场景,提供RabbitMQ的特定功能，例如支持RabbitMQ消息确认,事务和回调;
  */
 @Service
 public class MQSender {

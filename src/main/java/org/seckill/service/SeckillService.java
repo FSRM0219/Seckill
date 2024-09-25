@@ -39,8 +39,9 @@ public class SeckillService {
     }
 
     /**
-     * 获取用户秒杀结果,根据用户ID和商品ID查询订单<br>如果找到订单，返回订单ID;
-     * 否则检查该商品秒杀是否已结束<br>如果商品的秒杀已结束，返回-1,否则返回0,表示秒杀进行中。
+     * 获取用户秒杀结果,根据用户ID和商品ID查询订单<br>
+     * 存在订单返回其ID;否则判断该商品秒杀是否已结束<br>
+     * 如果商品的秒杀已结束，返回-1,否则返回0,表示秒杀进行中
      */
     public long getSeckillResult(long userId, long goodsId) {
         SeckillOrder order = orderService.getOrderByUserIdGoodsId(userId, goodsId);

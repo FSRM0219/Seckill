@@ -1,5 +1,6 @@
 org\seckill\service\OrderService.class
 org\seckill\redis\RedisPoolFactory.class
+org\seckill\util\LeakyBucketRateLimiter.class
 org\seckill\controller\LoginController.class
 org\seckill\exception\GlobalExceptionHandler.class
 org\seckill\redis\RedisConfig.class
@@ -22,7 +23,6 @@ org\seckill\config\WebConfig.class
 org\seckill\controller\SeckillController.class
 org\seckill\vo\OrderDetailVO.class
 org\seckill\util\MD5Util.class
-org\seckill\entity\SeckillOrder$SeckillOrderBuilder.class
 org\seckill\controller\OrderController.class
 org\seckill\controller\UserController.class
 org\seckill\util\DBUtil.class
@@ -36,7 +36,6 @@ org\seckill\config\UserArgumentResolver.class
 org\seckill\entity\SeckillGoods.class
 org\seckill\mapper\GoodsMapper.class
 org\seckill\service\UserService.class
-org\seckill\entity\OrderInfo$OrderInfoBuilder.class
 org\seckill\redis\RedisService.class
 org\seckill\validator\IsMobile.class
 org\seckill\result\Result.class
@@ -44,7 +43,6 @@ org\seckill\service\SeckillService.class
 org\seckill\redis\SeckillKey.class
 org\seckill\redis\OrderKey.class
 org\seckill\vo\LoginVO.class
-org\seckill\controller\DemoController.class
 org\seckill\service\GoodsService.class
 org\seckill\MainApplication.class
 org\seckill\vo\GoodsDetailVO.class

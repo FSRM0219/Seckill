@@ -1,6 +1,5 @@
 package org.seckill.controller;
 
-import com.google.common.util.concurrent.RateLimiter;
 import org.seckill.entity.SeckillOrder;
 import org.seckill.entity.User;
 import org.seckill.rabbitmq.MQSender;
@@ -12,6 +11,7 @@ import org.seckill.result.Result;
 import org.seckill.service.GoodsService;
 import org.seckill.service.OrderService;
 import org.seckill.service.SeckillService;
+import org.seckill.util.LeakyBucketRateLimiter;
 import org.seckill.vo.GoodsVO;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/seckill")
@@ -45,18 +44,17 @@ public class SeckillController implements InitializingBean {
     @Resource
     MQSender sender;
 
-    /*基于令牌桶算法的限流实现类*/
-    RateLimiter rateLimiter = RateLimiter.create(10);
+    LeakyBucketRateLimiter rateLimiter = new LeakyBucketRateLimiter(10, 1);
 
-    /*做标记，判断该商品是否被处理过了*/
+    // 标记商品是否被秒杀
     private final HashMap<Long, Boolean> localOverMap = new HashMap<Long, Boolean>();
 
-    /*将同步下单改为异步下单*/
+    // 异步下单
     @RequestMapping(value = "/do_seckill", method = RequestMethod.POST)
     @ResponseBody
     public Result<Integer> list(Model model, User user, @RequestParam("goodsId") long goodsId) {
 
-        if (!rateLimiter.tryAcquire(1000, TimeUnit.MILLISECONDS)) {
+        if (!rateLimiter.tryAcquire()) {
             return Result.error(CodeMsg.ACCESS_LIMIT_REACHED);
         }
 
@@ -64,35 +62,35 @@ public class SeckillController implements InitializingBean {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
         model.addAttribute("user", user);
-        //内存标记，减少redis访问
+
         boolean over = localOverMap.get(goodsId);
         if (over) {
             return Result.error(CodeMsg.SECKILL_OVER);
         }
-        //预减库存
+
+        // TODO 代码逻辑有问题，如何判断双写不一致
         long stock = redisService.decr(GoodsKey.getGoodsStock, "" + goodsId);//10
         if (stock < 0) {
             afterPropertiesSet();
-            long stock2 = redisService.decr(GoodsKey.getGoodsStock, "" + goodsId);//10
-            if (stock2 < 0) {
-                localOverMap.put(goodsId, true);
+            long stock1 = redisService.decr(GoodsKey.getGoodsStock, "" + goodsId);//10
+            if (stock1 < 0) {
+                localOverMap.put(goodsId, true); // true秒杀完成
                 return Result.error(CodeMsg.SECKILL_OVER);
             }
         }
-        //判断重复秒杀
+
         SeckillOrder order = orderService.getOrderByUserIdGoodsId(user.getId(), goodsId);
         if (order != null) {
             return Result.error(CodeMsg.REPEAT_SECKILL);
         }
-        //入队
+
         SeckillMessage message = new SeckillMessage();
         message.setUser(user);
         message.setGoodsId(goodsId);
         sender.sendSeckillMessage(message);
-        return Result.success(0);//排队中
+        return Result.success(0);
     }
 
-    /*系统初始化,将商品信息加载到redis和本地内存*/
     @Override
     public void afterPropertiesSet() {
         List<GoodsVO> goodsVOList = goodsService.listGoodsVO();
@@ -101,24 +99,22 @@ public class SeckillController implements InitializingBean {
         }
         for (GoodsVO goods : goodsVOList) {
             redisService.set(GoodsKey.getGoodsStock, "" + goods.getId(), goods.getStockCount());
-            //初始化商品都是没有处理过的
+            // 标记已秒杀商品
             localOverMap.put(goods.getId(), false);
         }
     }
 
-    /*
-     * orderId：成功
-     * -1：秒杀失败
-     * 0： 排队中
+    /**
+     * @param model SpringMVC,用于视图中传递数据
      */
     @RequestMapping(value = "/result", method = RequestMethod.GET)
     @ResponseBody
-    public Result<Long> seckillResult(Model model, User user,
-                                      @RequestParam("goodsId") long goodsId) {
-        model.addAttribute("user", user);
+    public Result<Long> seckillResult(Model model, User user, @RequestParam("goodsId") long goodsId) {
+        model.addAttribute("user", user); // 将用户对象添加到模型
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
+        // -1秒杀已结束; 0秒杀进行中
         long orderId = seckillService.getSeckillResult(user.getId(), goodsId);
         return Result.success(orderId);
     }

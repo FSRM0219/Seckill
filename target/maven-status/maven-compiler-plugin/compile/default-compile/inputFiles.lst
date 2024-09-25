@@ -3,6 +3,7 @@ E:\Project\Java\seckill\src\main\java\org\seckill\config\WebConfig.java
 E:\Project\Java\seckill\src\main\java\org\seckill\redis\OrderKey.java
 E:\Project\Java\seckill\src\main\java\org\seckill\vo\GoodsDetailVO.java
 E:\Project\Java\seckill\src\main\java\org\seckill\MainApplication.java
+E:\Project\Java\seckill\src\main\java\org\seckill\util\LeakyBucketRateLimiter.java
 E:\Project\Java\seckill\src\main\java\org\seckill\rabbitmq\SeckillMessage.java
 E:\Project\Java\seckill\src\main\java\org\seckill\exception\GlobalExceptionHandler.java
 E:\Project\Java\seckill\src\main\java\org\seckill\controller\GoodsController.java
@@ -47,4 +48,3 @@ E:\Project\Java\seckill\src\main\java\org\seckill\redis\RedisConfig.java
 E:\Project\Java\seckill\src\main\java\org\seckill\util\DBUtil.java
 E:\Project\Java\seckill\src\main\java\org\seckill\config\UserArgumentResolver.java
 E:\Project\Java\seckill\src\main\java\org\seckill\redis\GoodsKey.java
-E:\Project\Java\seckill\src\main\java\org\seckill\controller\DemoController.java
